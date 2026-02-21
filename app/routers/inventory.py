@@ -74,6 +74,8 @@ async def get_stock(item_id: uuid.UUID, svc: Annotated[InventoryService, Depends
 async def set_stock(body: SetStockRequest, svc: Annotated[InventoryService, Depends(_get_svc)]) -> StockResponse:
     return await svc.set_stock(body)
 
+#This is for testing
+
 
 @router.post(
     "/stock/deduct",

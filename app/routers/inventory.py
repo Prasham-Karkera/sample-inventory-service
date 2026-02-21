@@ -77,6 +77,12 @@ async def set_stock(body: SetStockRequest, svc: Annotated[InventoryService, Depe
 #This is for testing
 
 
+@router.get("/test", tags=["Testing"])
+async def test_endpoint() -> dict[str, str]:
+    """Sample endpoint for manual testing and validation."""
+    return {"message": "Inventory service is reachable and responsive!"}
+
+
 @router.post(
     "/stock/deduct",
     response_model=StockResponse,

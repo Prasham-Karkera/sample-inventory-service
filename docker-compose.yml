@@ -1,0 +1,35 @@
+name: ka-chow-inventory-service
+
+services:
+  inventory-service:
+    build: .
+    container_name: fleetbite-inventory-service
+    ports:
+      - "8003:8003"
+    environment:
+      INV_DATABASE_URL: postgresql+asyncpg://postgres:postgres@inventory-db:5432/fb_inventory
+      INV_ENV: development
+    depends_on:
+      inventory-db:
+        condition: service_healthy
+    networks:
+      - fleetbite-network
+
+  inventory-db:
+    image: postgres:16
+    container_name: fleetbite-inventory-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fb_inventory
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fleetbite-network
+
+networks:
+  fleetbite-network:
+    external: true
